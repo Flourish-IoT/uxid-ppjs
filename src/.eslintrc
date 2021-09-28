@@ -1,0 +1,12 @@
+{
+	"extends": ["react-app", "react-app/jest"],
+	"settings": {
+		// "import/resolver": {
+		//     "typescript": {}
+		// }
+	},
+	"rules": {
+		// enforce having an empty line between import groups
+		"import/order": ["warn", { "newlines-between": "always" }]
+	}
+}

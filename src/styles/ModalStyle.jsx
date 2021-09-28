@@ -1,0 +1,14 @@
+export default function ModalStyle(props) {
+	return {
+		position: "absolute",
+		top: "50%",
+		left: "50%",
+		transform: "translate(-50%, -50%)",
+		bgcolor: "background.paper",
+		borderRadius: 1,
+		boxShadow: 24,
+		overflow: "scroll",
+		p: 4,
+		...props,
+	};
+}
