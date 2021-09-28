@@ -103,8 +103,10 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 			},
 		});
 
-		rest.refreshPosts();
-		rest.setAddEditPostModalOpen(false);
+		setTimeout(() => {
+			rest.refreshPosts();
+			rest.setAddEditPostModalOpen(false);
+		}, 100);
 	};
 
 	return (
