@@ -21,8 +21,17 @@ const db = admin.firestore();
 
 const postsRef = db.collection('posts');
 const getPosts = async () => {
-    const postsResult = await postsRef.orderBy('week', 'asc').get();
-    const posts = postsResult.docs.map(d => d.data());
+    let [users, postsResult] = await Promise.all([getUsers(), postsRef.orderBy('week', 'asc').get()]);
+
+    const posts = postsResult.docs.map(d => {
+        const post = d.data();
+        const author = users.find(u => u.id == post.author);
+        if (!!author) {
+            post.fullName = `${author.firstName} ${author.lastName}`;
+        }
+        return post;
+    });
+
     return posts;
 };
 
