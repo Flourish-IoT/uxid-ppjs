@@ -306,7 +306,10 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 			</Stack>
 			<Stack
 				spacing={1}
-				direction='row'
+				direction={{
+					xs: "column",
+					sm: "row",
+				}}
 				sx={{
 					justifyContent: "flex-end",
 				}}
