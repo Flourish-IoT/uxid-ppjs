@@ -101,7 +101,7 @@ export default function App() {
 								<CardActionArea>
 									<CardContent>
 										<Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-											Week {post.week}
+											Post # {post.week}
 										</Typography>
 										<Typography variant="h5" component="div">
 											{post.fullName}

@@ -118,7 +118,7 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 						sx={{ width: "50%" }}
 						type='number'
 						required
-						label='Week #'
+						label='Post #'
 						name='week'
 						value={values.week}
 						onInput={handleInputChange}
