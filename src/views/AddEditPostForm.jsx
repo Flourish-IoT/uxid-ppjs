@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
-import HelpIcon from "@mui/icons-material/Help";
-import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import { useCookies } from "react-cookie";
+import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
+import ControlPointIcon from "@mui/icons-material/ControlPoint";
+import HelpIcon from "@mui/icons-material/Help";
+import CodeIcon from "@mui/icons-material/Code";
+import TextFieldsIcon from "@mui/icons-material/TextFields";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import {
 	TextField,
 	Stack,
@@ -11,11 +15,15 @@ import {
 	IconButton,
 	Tooltip,
 	Dialog,
-	DialogActions,
+	DialogTitle,
 	DialogContent,
 	DialogContentText,
-	DialogTitle,
+	DialogActions,
 	Slide,
+	Menu,
+	MenuItem,
+	ListItemIcon,
+	ListItemText,
 } from "@mui/material";
 
 import AccomplishmentEditGroup from "../components/AccomplishmentEditGroup";
@@ -62,6 +70,49 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 		});
 	};
 
+	const postAsText = () => {
+		return `-=-=-= Accomplishments =-=-=-
+			${values.accomplishments.map((r, index) => {
+				return (
+					"\n" +
+					(index + 1) +
+					"." +
+					"\n            Title:   " +
+					r.title +
+					"\n            Hours:   " +
+					r.hours +
+					"\n      Description:   " +
+					r.description
+				);
+			})}
+
+			\n-=-=-= Plans =-=-=-
+			${values.plans.map((r) => {
+				return "\n" + r;
+			})}
+
+			\n-=-=-= Obstacles =-=-=-
+			${values.obstacles.map((r) => {
+				return "\n" + r;
+			})}
+		`;
+	};
+
+	const downloadPostObj = (fileName, source) => {
+		const text = source == "obj" ? JSON.stringify(values) : postAsText();
+
+		const element = document.createElement("a");
+		element.setAttribute(
+			"href",
+			"data:text/plain;charset=utf-8," + encodeURIComponent(text)
+		);
+		element.setAttribute("download", fileName);
+		element.style.display = "none";
+		document.body.appendChild(element);
+		element.click();
+		document.body.removeChild(element);
+	};
+
 	const savePost = () => {
 		setIsSaving(true);
 		axios
@@ -79,17 +130,7 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 				}, 100);
 			})
 			.catch((error) => {
-				const element = document.createElement("a");
-				element.setAttribute(
-					"href",
-					"data:text/plain;charset=utf-8," +
-						encodeURIComponent(JSON.stringify(values))
-				);
-				element.setAttribute("download", "Post Backup");
-				element.style.display = "none";
-				document.body.appendChild(element);
-				element.click();
-				document.body.removeChild(element);
+				downloadPostObj("PPJ Backup", "obj");
 			})
 			.finally(() => {
 				setIsSaving(false);
@@ -111,7 +152,7 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 
 	return (
 		<Form>
-			<Stack spacing={1} direction='column'>
+			<Stack id='postFormPrintZone' spacing={1} direction='column'>
 				<Stack spacing={1} direction='row'>
 					<TextField
 						variant='outlined'
@@ -276,15 +317,52 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 						color='error'
 						onClick={handleConfirmDeleteOpen}
 					>
-						Delete Post
+						Delete
 					</Button>
 				)}
+				<PopupState variant='popover' popupId='demo-popup-menu'>
+					{(popupState) => (
+						<React.Fragment>
+							<Button
+								variant='outlined'
+								endIcon={<ArrowDropDownIcon />}
+								{...bindTrigger(popupState)}
+							>
+								Download Draft
+							</Button>
+							<Menu {...bindMenu(popupState)}>
+								<MenuItem
+									onClick={() => {
+										downloadPostObj("PPJ Draft", "display");
+										popupState.close();
+									}}
+								>
+									<ListItemIcon>
+										<TextFieldsIcon />
+									</ListItemIcon>
+									<ListItemText>Text File</ListItemText>
+								</MenuItem>
+								<MenuItem
+									onClick={() => {
+										downloadPostObj("PPJ Draft", "obj");
+										popupState.close();
+									}}
+								>
+									<ListItemIcon>
+										<CodeIcon />
+									</ListItemIcon>
+									<ListItemText>Json Object</ListItemText>
+								</MenuItem>
+							</Menu>
+						</React.Fragment>
+					)}
+				</PopupState>
 				<Button
 					disabled={isSaving}
 					variant='contained'
 					onClick={savePost}
 				>
-					{addEditMode == "add" ? "Publish" : "Save"} Post
+					{addEditMode == "add" ? "Publish" : "Save"}
 				</Button>
 			</Stack>
 			<Dialog

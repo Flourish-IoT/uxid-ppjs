@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { CookiesProvider } from "react-cookie";
 import axios from 'axios';
-import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import {
 	AppBar,
 	CardActionArea,
@@ -12,7 +11,15 @@ import {
 	Grid,
 	Card,
 	Typography,
-	CardContent
+	CardContent,
+	SpeedDial,
+	SpeedDialIcon,
+	Dialog,
+	DialogTitle,
+	DialogContent,
+	DialogContentText,
+	DialogActions,
+	Slide
 } from '@mui/material';
 
 import CardStyle from "./styles/CardStyle";
@@ -20,6 +27,10 @@ import ModalStyle from "./styles/ModalStyle";
 import LoginForm from './views/LoginForm';
 import AddEditPostForm from './views/AddEditPostForm';
 import ViewPostScreen from './views/ViewPostScreen';
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+	return <Slide direction='up' ref={ref} {...props} />;
+});
 
 export default function App() {
 	const [loginModalOpen, setLoginModalOpen] = useState(false);
@@ -29,6 +40,8 @@ export default function App() {
 	const [loggedIn, setloggedIn] = useState(false);
 	const [addEditMode, setAddEditMode] = useState('');
 	const [allPosts, setCards] = useState(-1);
+	const [confirmDiscardOpen, setConfirmDiscardOpen] = useState(false);
+
 	if (allPosts === -1) {
 		setCards([]);
 		axios('/request-posts').then((cards) => {
@@ -55,7 +68,8 @@ export default function App() {
 	};
 
 	const openAddEditPostModal = (mode, post) => {
-		mode == 'edit' && !!post ? setSelectedPost(post) : setSelectedPost('');
+		// mode == 'edit' && !!post ? setSelectedPost(post) : setSelectedPost('');
+		setSelectedPost(post);
 		setAddEditMode(mode);
 		closeAllModals();
 		setAddEditPostModalOpen(true);
@@ -79,17 +93,6 @@ export default function App() {
 								onClick={() => { setLoginModalOpen(true); }}
 							>
 								Login
-							</Button>
-						)}
-
-						{loggedIn && (
-							<Button
-								variant="outlined"
-								color="inherit"
-								onClick={() => { openAddEditPostModal('add', undefined); }}
-								startIcon={<ControlPointIcon />}
-							>
-								Add Post
 							</Button>
 						)}
 					</Toolbar>
@@ -121,6 +124,16 @@ export default function App() {
 							No posts found.
 						</Typography>}
 				</Grid>
+				{loggedIn && (
+					<SpeedDial
+						id='speedDial'
+						ariaLabel="Add Post"
+						open={false}
+						sx={{ position: 'absolute', bottom: 32, right: 32 }}
+						icon={<SpeedDialIcon />}
+						onClick={() => { openAddEditPostModal('add', undefined); }}
+					/>
+				)}
 				<Modal
 					open={loginModalOpen}
 					onClose={() => { setLoginModalOpen(false); }}
@@ -140,7 +153,7 @@ export default function App() {
 				</Modal>
 				<Modal
 					open={addEditPostModalOpen}
-					onClose={() => { setAddEditPostModalOpen(false); }}
+					onClose={() => { setConfirmDiscardOpen(true); }}
 					aria-labelledby='modal-modal-title'
 				>
 					<Box
@@ -156,6 +169,31 @@ export default function App() {
 							{addEditMode == 'add' ? 'Add' : 'Edit'} Post
 						</Typography>
 						<AddEditPostForm addEditMode={addEditMode} post={selectedPost} setAddEditPostModalOpen={setAddEditPostModalOpen} refreshPosts={refreshPosts}></AddEditPostForm>
+						<Dialog
+							open={confirmDiscardOpen}
+							TransitionComponent={Transition}
+							keepMounted
+							onClose={() => { setConfirmDiscardOpen(false); }}
+							aria-describedby='alert-dialog-slide-description'
+						>
+							<DialogTitle>Discard Post?</DialogTitle>
+							<DialogContent>
+								<DialogContentText id='alert-dialog-slide-description'>
+									Your are about to discard your changes, it cannot be undone.
+								</DialogContentText>
+							</DialogContent>
+							<DialogActions>
+								<Button onClick={() => { setConfirmDiscardOpen(false); }}>Cancel</Button>
+								<Button
+									onClick={() => {
+										setAddEditPostModalOpen(false);
+										setConfirmDiscardOpen(false);
+									}}
+								>
+									Yes
+								</Button>
+							</DialogActions>
+						</Dialog>
 					</Box>
 				</Modal>
 				<Modal
