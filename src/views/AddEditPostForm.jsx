@@ -5,8 +5,8 @@ import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import HelpIcon from "@mui/icons-material/Help";
 import CodeIcon from "@mui/icons-material/Code";
-import TextFieldsIcon from "@mui/icons-material/TextFields";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import {
 	TextField,
 	Stack,
@@ -338,7 +338,7 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 									}}
 								>
 									<ListItemIcon>
-										<TextFieldsIcon />
+										<DescriptionOutlinedIcon />
 									</ListItemIcon>
 									<ListItemText>Text File</ListItemText>
 								</MenuItem>
