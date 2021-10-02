@@ -9,6 +9,7 @@ export default function ModalStyle(props) {
 		boxShadow: 24,
 		overflow: "scroll",
 		p: 4,
+		outline: 0,
 		...props,
 	};
 }

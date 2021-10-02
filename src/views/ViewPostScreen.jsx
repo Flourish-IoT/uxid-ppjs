@@ -1,5 +1,15 @@
+import { useState } from "react";
 import { useCookies } from "react-cookie";
-import { Divider, Stack, Button } from "@mui/material";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import {
+	Divider,
+	Stack,
+	Button,
+	IconButton,
+	Tooltip,
+	Box,
+} from "@mui/material";
 
 export default function ViewPostScreen({
 	post,
@@ -7,11 +17,37 @@ export default function ViewPostScreen({
 	...rest
 }) {
 	const [cookies, setCookie] = useCookies({});
+	const [copiedText, setCopiedText] = useState();
+	const postLink = `${window.location.origin}?id=${post.id}`;
 
 	return (
 		<>
 			<Stack spacing={1} direction='row'>
 				<h1>{post.fullName}</h1>
+
+				{/* Spacer */}
+				<Box sx={{ flexGrow: 1 }} />
+
+				<CopyToClipboard
+					text={postLink}
+					onCopy={() => setCopiedText(postLink)}
+				>
+					<Tooltip
+						placement='top'
+						title={
+							<h3>
+								{copiedText == postLink
+									? "Copied!"
+									: "Copy post link"}
+							</h3>
+						}
+					>
+						<IconButton color='primary' aria-label='Copy post link'>
+							<ContentCopyIcon />
+						</IconButton>
+					</Tooltip>
+				</CopyToClipboard>
+
 				{rest.loggedIn && cookies.userId == post.author && (
 					<Button
 						sx={{ alignSelf: "center" }}

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import qs from 'qs';
 import { CookiesProvider } from "react-cookie";
 import axios from 'axios';
 import {
@@ -68,12 +69,21 @@ export default function App() {
 	};
 
 	const openAddEditPostModal = (mode, post) => {
-		// mode == 'edit' && !!post ? setSelectedPost(post) : setSelectedPost('');
+		mode == 'edit' && !!post ? setSelectedPost(post) : setSelectedPost('');
 		setSelectedPost(post);
 		setAddEditMode(mode);
 		closeAllModals();
 		setAddEditPostModalOpen(true);
 	};
+
+	// Open post by query
+	const [hasOpenedPost, setHasOpenedPost] = useState(false);
+	const query = qs.parse(window.location.search, { ignoreQueryPrefix: true }).id;
+	if (allPosts != -1 && allPosts.length > 0 && !hasOpenedPost && query) {
+		const thePost = allPosts.find(p => p.id == query);
+		!!thePost ? openViewPostModal(thePost) : alert('Error: No post found with ID of ' + query);
+		setHasOpenedPost(true);
+	}
 
 	return (
 		<div className="App" style={{
@@ -141,7 +151,10 @@ export default function App() {
 				>
 					<Box
 						component="div"
-						sx={ModalStyle()}
+						sx={ModalStyle({
+							width: '75%',
+							maxWidth: '300px'
+						})}
 					>
 						<Typography id='modal-modal-title' variant='h6' sx={{
 							marginBottom: 2
@@ -160,7 +173,7 @@ export default function App() {
 						component="div"
 						sx={ModalStyle({
 							width: '75%',
-							height: '75%',
+							height: '75%'
 						})}
 					>
 						<Typography id='modal-modal-title' variant='h6' sx={{
@@ -190,7 +203,7 @@ export default function App() {
 										setConfirmDiscardOpen(false);
 									}}
 								>
-									Yes
+									Discard
 								</Button>
 							</DialogActions>
 						</Dialog>
@@ -205,7 +218,7 @@ export default function App() {
 						component="div"
 						sx={ModalStyle({
 							width: '75%',
-							height: '75%',
+							height: '75%'
 						})}
 					>
 						<ViewPostScreen openAddEditPostModal={openAddEditPostModal} loggedIn={loggedIn} post={selectedPost}></ViewPostScreen>
