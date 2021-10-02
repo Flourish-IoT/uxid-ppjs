@@ -7,9 +7,6 @@
 		"@emotion/styled": "^11.3.0",
 		"@mui/icons-material": "^5.0.1",
 		"@mui/material": "^5.0.1",
-		"@testing-library/jest-dom": "^5.11.4",
-		"@testing-library/react": "^11.1.0",
-		"@testing-library/user-event": "^12.1.10",
 		"axios": "^0.21.4",
 		"cookie-parser": "^1.4.5",
 		"dotenv": "^10.0.0",
@@ -17,25 +14,22 @@
 		"express": "^4.17.1",
 		"firebase-admin": "^9.11.1",
 		"material-ui-popup-state": "^1.9.3",
+		"qs": "^6.10.1",
 		"react": "^17.0.2",
 		"react-cookie": "^4.1.1",
 		"react-dom": "^17.0.2",
 		"react-draft-wysiwyg": "^1.14.7",
-		"react-scripts": "4.0.3",
-		"socket.io": "^4.2.0",
-		"web-vitals": "^1.0.1"
+		"react-scripts": "4.0.3"
 	},
 	"scripts": {
 		"start": "node -r dotenv/config ./api/server.js",
 		"build": "GENERATE_SOURCEMAP=false react-scripts build",
 		"dev": "react-scripts start",
-		"test": "react-scripts test",
 		"eject": "react-scripts eject"
 	},
 	"eslintConfig": {
 		"extends": [
-			"react-app",
-			"react-app/jest"
+			"react-app"
 		]
 	},
 	"browserslist": {
