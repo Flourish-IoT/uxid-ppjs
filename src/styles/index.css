@@ -24,11 +24,13 @@ code {
 	border-radius: 4px;
 }
 
-.react-draft-wysiwyg-editor {
-	height: 10rem !important;
-}
-
 .rdw-editor-toolbar {
 	border: none !important;
 	background-color: #fafafa !important;
+}
+
+.editorClassName {
+	min-height: 150px !important;
+	margin-top: -0.5rem !important;
+	padding: 0 0.75rem;
 }

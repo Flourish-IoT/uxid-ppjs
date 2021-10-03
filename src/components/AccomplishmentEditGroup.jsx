@@ -1,18 +1,29 @@
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
-// import { useState } from "react";
-// import { EditorState } from "draft-js";
-// import { Editor } from "react-draft-wysiwyg";
-// import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { useState } from "react";
+import { Editor } from "react-draft-wysiwyg";
+import { EditorState, ContentState, convertToRaw } from "draft-js";
+import draftToHtml from "draftjs-to-html";
+import htmlToDraft from "html-to-draftjs";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 import GroupIndexer from "./GroupIndexer";
 
 export default function AccomplishmentEditGroup(props) {
-	// const [editorState, setEditorState] = useState(() =>
-	// 	EditorState.createEmpty()
-	// );
+	let initialDescriptionState = null;
+	if (!!props.value.description) {
+		const blocksFromHtml = htmlToDraft(props.value.description);
+		const { contentBlocks, entityMap } = blocksFromHtml;
+		const contentState = ContentState.createFromBlockArray(
+			contentBlocks,
+			entityMap
+		);
+		initialDescriptionState = EditorState.createWithContent(contentState);
+	}
 
-	// const onEditorStateChange = () => {};
+	const [editorState, setEditorState] = useState(
+		initialDescriptionState ?? EditorState.createEmpty()
+	);
 
 	return (
 		<Stack spacing={2} direction='row'>
@@ -49,20 +60,27 @@ export default function AccomplishmentEditGroup(props) {
 						}}
 					/>
 				</Stack>
-				{/* <Editor
-					editorClassName='react-draft-wysiwyg-editor'
+				<Editor
 					editorState={editorState}
-					onChange={onEditorStateChange}
-				/> */}
-				<TextField
-					variant='outlined'
-					multiline
-					rows={4}
-					required
-					label='Description'
-					name={`*obj-in-array;${props.groupKey};description;${props.index}`}
-					value={props.value.description}
-					onInput={props.handleInputChange}
+					toolbarClassName='toolbarClassName'
+					wrapperClassName='wrapperClassName'
+					editorClassName='editorClassName'
+					onEditorStateChange={(newSate) => {
+						setEditorState(newSate);
+						props.handleInputChange({
+							target: {
+								name: `*obj-in-array;${props.groupKey};description;${props.index}`,
+								value: draftToHtml(
+									convertToRaw(newSate.getCurrentContent())
+								),
+							},
+						});
+						console.log(
+							draftToHtml(
+								convertToRaw(newSate.getCurrentContent())
+							)
+						);
+					}}
 				/>
 			</Stack>
 		</Stack>

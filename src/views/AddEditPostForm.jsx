@@ -193,8 +193,10 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 					<Tooltip
 						title={
 							<h3>
-								Cumulative time worked on project during week.
-								(Time in class does not count).
+								Narrative of specific task. Include visual
+								samples of art (jpg/png), post links to github
+								repo, codepen embeds, youtube embeds, or
+								prototypes to show proof of completed work.
 							</h3>
 						}
 					>
