@@ -86,7 +86,13 @@ export default function ViewPostScreen({
 			<h2>Plans</h2>
 			<ul>
 				{post.plans.map((p, index) => (
-					<li key={index} dangerouslySetInnerHTML={{ __html: p }} />
+					<li
+						key={index}
+						dangerouslySetInnerHTML={{ __html: p }}
+						style={{
+							marginBottom: "0.5rem",
+						}}
+					/>
 				))}
 			</ul>
 
@@ -95,7 +101,13 @@ export default function ViewPostScreen({
 			<h2>Obstacles</h2>
 			<ul>
 				{post.obstacles.map((o, index) => (
-					<li key={index} dangerouslySetInnerHTML={{ __html: o }} />
+					<li
+						key={index}
+						dangerouslySetInnerHTML={{ __html: o }}
+						style={{
+							marginBottom: "0.5rem",
+						}}
+					/>
 				))}
 			</ul>
 		</>
