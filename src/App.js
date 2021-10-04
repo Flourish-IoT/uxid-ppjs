@@ -124,13 +124,7 @@ export default function App() {
 							</Card>
 						</Grid>
 					)) :
-						<Typography variant="h6" component="div" sx={{
-							flexGrow: 1,
-							// position: "relative",
-							// top: "50%",
-							// left: "50%",
-							// transform: "translate(-50%, -50%)",
-						}}>
+						<Typography variant="h6" component="div">
 							No posts found.
 						</Typography>}
 				</Grid>

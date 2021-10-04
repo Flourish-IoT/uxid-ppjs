@@ -60,7 +60,11 @@ const addPost = async (postObj, addEditMode) => {
 const usersRef = db.collection('users');
 const getUsers = async () => {
     const usersResult = await usersRef.get();
-    const users = usersResult.docs.map(d => d.data());
+    const users = usersResult.docs.map(d => {
+        const user = d.data();
+        user.dbRef = d.ref;
+        return user;
+    });
     return users;
 };
 
@@ -78,22 +82,6 @@ app.listen(port, () => {
     console.log(`Hosting Server @ http://localhost:${port}`);
 });
 
-const saveKeys = [];
-
-function setSaveKey(userId, saveKey) {
-    const theUsersKey = saveKeys.find(k => k.userId == userId);
-
-    if (!theUsersKey) {
-        saveKeys.push({
-            userId,
-            saveKey
-        });
-        return;
-    }
-
-    theUsersKey.saveKey = saveKey;
-}
-
 app.get('/login', async (req, res) => {
     const query = req.query;
     Object.keys(query).forEach(key => {
@@ -109,7 +97,7 @@ app.get('/login', async (req, res) => {
 
     const saveKey = randomString(16);
     const user = matchingAccount;
-    setSaveKey(user.id, saveKey);
+    await user.dbRef.update({ saveKey });
 
     res.cookie('saveKey', saveKey);
     res.cookie('userId', user.id);
@@ -123,23 +111,22 @@ app.get('/request-posts', async (req, res) => {
 
 app.get('/save-post', async (req, res) => {
     const cookies = req.cookies;
-    const matchingSaveKeyLog = saveKeys.find(k => k.saveKey == cookies.saveKey && k.userId == cookies.userId);
+
+    const users = await getUsers();
+    const matchingAccount = users.find(a => a.id == cookies.userId);
 
     function handleSaveError(message) {
         // Display error about the backup file.
         res.status(500).send(message + '\n\nA backup file will download with the form data, please send this to Hunter so he can manually add it.');
     }
 
-    if (!cookies.saveKey || !matchingSaveKeyLog) {
+    if (!cookies.saveKey || !matchingAccount) {
         handleSaveError('You are not logged in.');
         return;
-    } else if (cookies.saveKey != matchingSaveKeyLog.saveKey) {
+    } else if (cookies.saveKey != matchingAccount.saveKey) {
         handleSaveError('Your authentication may have expired.');
         return;
     }
-
-    const users = await getUsers();
-    const matchingAccount = users.find(a => a.id == matchingSaveKeyLog.userId);
 
     const postObj = JSON.parse(req.query.postObj);
     const posts = await getPosts();
@@ -161,9 +148,9 @@ app.get('/save-post', async (req, res) => {
     }
 
     postObj.author = matchingAccount.id;
+    if (!!postObj.fullName) delete postObj.fullName;
 
     if (!overWrite) { // Save new
-        // postObj.id = new Date().getTime(); // Unix timestamp, will never be the same
         postObj.id = new Date().getTime(); // Unix timestamp, will never be the same
     }
 
@@ -178,18 +165,18 @@ app.get('/save-post', async (req, res) => {
 app.get('/delete-post', async (req, res) => {
     const query = req.query;
     const cookies = req.cookies;
-    const matchingSaveKeyLog = saveKeys.find(k => k.saveKey == cookies.saveKey && k.userId == cookies.userId);
 
-    if (!cookies.saveKey || !matchingSaveKeyLog) {
+    const users = await getUsers();
+    const matchingAccount = users.find(a => a.id == cookies.userId);
+
+    if (!cookies.saveKey || !matchingAccount) {
         res.status(500).send('You are not logged in.');
         return;
-    } else if (cookies.saveKey != matchingSaveKeyLog.saveKey) {
-        res.status(500).send('Your authentication may have expired. Please save your post outside this website.');
+    } else if (cookies.saveKey != matchingAccount.saveKey) {
+        res.status(500).send('Your authentication may have expired.');
         return;
     }
 
-    const users = await getUsers();
-    const matchingAccount = users.find(a => a.id == matchingSaveKeyLog.userId);
     const posts = await getPosts();
     const thePost = posts.find(p => p.id == query.postId);
 
