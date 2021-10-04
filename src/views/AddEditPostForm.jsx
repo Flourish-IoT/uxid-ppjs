@@ -98,8 +98,23 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 		`;
 	};
 
-	const downloadPostObj = (fileName, source) => {
-		const text = source == "obj" ? JSON.stringify(values) : postAsText();
+	const downloadPost = (fileName, source) => {
+		const getText = () => {
+			switch (source) {
+				case "display":
+					return postAsText();
+				case "json":
+					return JSON.stringify(values);
+				default:
+					return (
+						postAsText() +
+						"\n\n========== As JSON ==========\n\n" +
+						JSON.stringify(values)
+					);
+			}
+		};
+
+		const text = getText();
 
 		const element = document.createElement("a");
 		element.setAttribute(
@@ -130,7 +145,7 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 				}, 100);
 			})
 			.catch((error) => {
-				downloadPostObj("PPJ Backup", "obj");
+				downloadPost("PPJ Backup", "all");
 			})
 			.finally(() => {
 				setIsSaving(false);
@@ -338,7 +353,7 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 							<Menu {...bindMenu(popupState)}>
 								<MenuItem
 									onClick={() => {
-										downloadPostObj("PPJ Draft", "display");
+										downloadPost("PPJ Draft", "display");
 										popupState.close();
 									}}
 								>
@@ -349,14 +364,14 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 								</MenuItem>
 								<MenuItem
 									onClick={() => {
-										downloadPostObj("PPJ Draft", "obj");
+										downloadPost("PPJ Draft", "json");
 										popupState.close();
 									}}
 								>
 									<ListItemIcon>
 										<CodeIcon />
 									</ListItemIcon>
-									<ListItemText>Json Object</ListItemText>
+									<ListItemText>JSON Object</ListItemText>
 								</MenuItem>
 							</Menu>
 						</React.Fragment>
