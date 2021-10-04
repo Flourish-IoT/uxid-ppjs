@@ -29,6 +29,10 @@ code {
 	background-color: #fafafa !important;
 }
 
+.rdw-editor-main {
+	height: unset !important;
+}
+
 .editorClassName {
 	min-height: 150px !important;
 	margin-top: -0.5rem !important;
