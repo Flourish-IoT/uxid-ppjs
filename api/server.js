@@ -1,6 +1,28 @@
+// Packages
+
 require('dotenv').config();
-const env = process.env;
+const path = require('path');
 const admin = require('firebase-admin');
+const express = require('express');
+const router = express.Router();
+const bodyParser = require("body-parser");
+
+const app = express();
+const env = process.env;
+const port = env.PORT || 5000;
+
+// Middleware
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use("/", router);
+app.use(express.static(path.join(__dirname, '../build/'))); // Serve dir
+
+app.listen(port, () => {
+    console.log(`Hosting Server @ http://localhost:${port}`);
+});
+
+// Firebase
 
 admin.initializeApp({
     credential: admin.credential.cert({
@@ -68,22 +90,10 @@ const getUsers = async () => {
     return users;
 };
 
-const express = require('express');
-const path = require('path');
-const app = express();
-const cookieParser = require('cookie-parser');
-const port = env.PORT || 5000;
+// Requests
 
-app
-    .use(cookieParser())
-    .use(express.static(path.join(__dirname, '../build/'))); // Serve dir
-
-app.listen(port, () => {
-    console.log(`Hosting Server @ http://localhost:${port}`);
-});
-
-app.get('/login', async (req, res) => {
-    const query = req.query;
+router.post('/login', async (req, res) => {
+    const query = req.body;
     Object.keys(query).forEach(key => {
         query[key] = query[key].toLowerCase();
     });
@@ -104,13 +114,14 @@ app.get('/login', async (req, res) => {
     res.status(200).send('OK');
 });
 
-app.get('/request-posts', async (req, res) => {
+router.get('/request-posts', async (req, res) => {
     const posts = await getPosts();
     res.status(200).send(posts);
 });
 
-app.get('/save-post', async (req, res) => {
-    const cookies = req.cookies;
+router.post('/save-post', async (req, res) => {
+    const postObj = req.body;
+    const cookies = cookieToJSON(req.headers.cookie);
 
     const users = await getUsers();
     const matchingAccount = users.find(a => a.id == cookies.userId);
@@ -128,7 +139,6 @@ app.get('/save-post', async (req, res) => {
         return;
     }
 
-    const postObj = JSON.parse(req.query.postObj);
     const posts = await getPosts();
     let overWrite = false;
     let thePost = undefined;
@@ -162,9 +172,9 @@ app.get('/save-post', async (req, res) => {
     }
 });
 
-app.get('/delete-post', async (req, res) => {
-    const query = req.query;
-    const cookies = req.cookies;
+router.post('/delete-post', async (req, res) => {
+    const query = req.body;
+    const cookies = cookieToJSON(req.headers.cookie);
 
     const users = await getUsers();
     const matchingAccount = users.find(a => a.id == cookies.userId);
@@ -195,11 +205,24 @@ app.get('/delete-post', async (req, res) => {
     }
 });
 
-function randomString(length) {
+// Utils
+
+const randomString = (length) => {
     let result = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     for (let i = 0; i < length; i++) {
         result += characters.charAt(Math.floor(Math.random() * characters.length));
     }
     return result;
-}
+};
+
+const cookieToJSON = (cookie) => {
+    const rawCookies = cookie.split('; ');
+
+    const parsedCookies = {};
+    rawCookies.forEach(rawCookie => {
+        const parsedCookie = rawCookie.split('=');
+        parsedCookies[parsedCookie[0]] = parsedCookie[1];
+    });
+    return parsedCookies;
+};

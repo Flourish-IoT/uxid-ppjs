@@ -11,11 +11,9 @@ export default function LoginForm(props) {
 		setIsLoading(true);
 
 		axios
-			.get("/login", {
-				params: {
-					username: values.username,
-					password: values.password,
-				},
+			.post("/login", {
+				username: values.username,
+				password: values.password,
 			})
 			.then((res) => {
 				props.closeModalFunc();

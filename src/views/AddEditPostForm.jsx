@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useCookies } from "react-cookie";
 import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import HelpIcon from "@mui/icons-material/Help";
@@ -36,7 +35,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function AddEditPostForm({ addEditMode, post, ...rest }) {
-	const [cookies, setCookie] = useCookies({});
 	const [isSaving, setIsSaving] = useState(false);
 
 	const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
@@ -102,7 +100,7 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 		const getText = () => {
 			switch (source) {
 				case "display":
-					return postAsText();
+					return postAsText().replace(/<\/?[^>]+(>|$)/g, "");
 				case "json":
 					return JSON.stringify(values);
 				default:
@@ -131,12 +129,7 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 	const savePost = () => {
 		setIsSaving(true);
 		axios
-			.get("/save-post", {
-				params: {
-					saveKey: cookies.saveKey,
-					postObj: values,
-				},
-			})
+			.post("/save-post", values)
 			.then((response) => {
 				setTimeout(() => {
 					// Save buffer
@@ -153,10 +146,8 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 	};
 
 	const deletePost = async () => {
-		await axios("/delete-post", {
-			params: {
-				postId: post.id,
-			},
+		await axios.post("/delete-post", {
+			postId: post.id,
 		});
 
 		setTimeout(() => {
