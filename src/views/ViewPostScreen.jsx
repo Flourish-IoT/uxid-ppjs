@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useCookies } from "react-cookie";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import LinkIcon from "@mui/icons-material/Link";
 import {
 	Divider,
 	Stack,
@@ -43,7 +43,7 @@ export default function ViewPostScreen({
 						}
 					>
 						<IconButton color='primary' aria-label='Copy post link'>
-							<ContentCopyIcon />
+							<LinkIcon />
 						</IconButton>
 					</Tooltip>
 				</CopyToClipboard>
