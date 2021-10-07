@@ -10,6 +10,9 @@ export default function ModalStyle(props) {
 		overflowY: "scroll",
 		p: 4,
 		outline: 0,
+		img: {
+			maxWidth: "100%",
+		},
 		...props,
 	};
 }

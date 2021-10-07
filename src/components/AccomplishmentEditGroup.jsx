@@ -81,7 +81,6 @@ export default function AccomplishmentEditGroup(props) {
 					toolbarClassName='toolbarClassName'
 					wrapperClassName='wrapperClassName'
 					editorClassName='editorClassName'
-					// handleKeyCommand={this.handleKeyCommand}
 					toolbar={{
 						options: [
 							"inline",
