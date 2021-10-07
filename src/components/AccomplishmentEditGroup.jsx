@@ -94,7 +94,7 @@ export default function AccomplishmentEditGroup(props) {
 							"history",
 						],
 					}}
-					keyBindingFn={keyBindings}
+					// keyBindingFn={keyBindings}
 					onEditorStateChange={(newSate) => {
 						setEditorState(newSate);
 						props.handleInputChange({
