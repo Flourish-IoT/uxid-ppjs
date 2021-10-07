@@ -6,8 +6,11 @@ import { EditorState, ContentState, convertToRaw } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { getDefaultKeyBinding, KeyBindingUtil } from "draft-js";
 
 import GroupIndexer from "./GroupIndexer";
+
+const { hasCommandModifier } = KeyBindingUtil;
 
 export default function AccomplishmentEditGroup(props) {
 	let initialDescriptionState = null;
@@ -24,6 +27,18 @@ export default function AccomplishmentEditGroup(props) {
 	const [editorState, setEditorState] = useState(
 		initialDescriptionState ?? EditorState.createEmpty()
 	);
+
+	const keyBindings = (e) => {
+		if (!hasCommandModifier(e)) return;
+
+		switch (e.keyCode) {
+			case 83: // S
+				e.preventDefault(); // Block page save
+				break;
+			default:
+				return getDefaultKeyBinding(e);
+		}
+	};
 
 	return (
 		<Stack spacing={2} direction='row'>
@@ -61,10 +76,26 @@ export default function AccomplishmentEditGroup(props) {
 					/>
 				</Stack>
 				<Editor
+					spellCheck={true}
 					editorState={editorState}
 					toolbarClassName='toolbarClassName'
 					wrapperClassName='wrapperClassName'
 					editorClassName='editorClassName'
+					// handleKeyCommand={this.handleKeyCommand}
+					toolbar={{
+						options: [
+							"inline",
+							"fontSize",
+							"list",
+							"textAlign",
+							"colorPicker",
+							"link",
+							"image",
+							"embedded",
+							"history",
+						],
+					}}
+					keyBindingFn={keyBindings}
 					onEditorStateChange={(newSate) => {
 						setEditorState(newSate);
 						props.handleInputChange({
@@ -75,11 +106,6 @@ export default function AccomplishmentEditGroup(props) {
 								),
 							},
 						});
-						console.log(
-							draftToHtml(
-								convertToRaw(newSate.getCurrentContent())
-							)
-						);
 					}}
 				/>
 			</Stack>

@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import qs from 'qs';
 import { CookiesProvider } from "react-cookie";
 import axios from 'axios';
+import moment from 'moment';
 import {
 	AppBar,
 	CardActionArea,
@@ -20,7 +21,8 @@ import {
 	DialogContent,
 	DialogContentText,
 	DialogActions,
-	Slide
+	Slide,
+	Divider
 } from '@mui/material';
 
 import CardStyle from "./styles/CardStyle";
@@ -33,6 +35,23 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 	return <Slide direction='up' ref={ref} {...props} />;
 });
 
+const groupBy = (xs, key) => {
+	return xs.reduce((rv, x) => {
+		(rv[x[key]] = rv[x[key]] || []).push(x);
+		return rv;
+	}, {});
+};
+
+const getDateRange = (weekNum) => {
+	const format = 'MM/DD/YY';
+	const origin = moment('09/23/2021', format);
+
+	const begin = moment(origin).add(1 * (weekNum), 'weeks').format(format);
+	const end = moment(begin).subtract(1, 'days').add(1, 'weeks').format(format);
+
+	return `${begin} - ${end}`;
+};
+
 export default function App() {
 	const [loginModalOpen, setLoginModalOpen] = useState(false);
 	const [addEditPostModalOpen, setAddEditPostModalOpen] = useState(false);
@@ -40,19 +59,19 @@ export default function App() {
 	const [selectedPost, setSelectedPost] = useState('');
 	const [loggedIn, setloggedIn] = useState(false);
 	const [addEditMode, setAddEditMode] = useState('');
-	const [allPosts, setCards] = useState(-1);
+	const [allPosts, setPosts] = useState(-1);
 	const [confirmDiscardOpen, setConfirmDiscardOpen] = useState(false);
 
 	if (allPosts === -1) {
-		setCards([]);
-		axios('/request-posts').then((cards) => {
-			setCards(cards.data);
+		setPosts([]);
+		axios('/request-posts').then((result) => {
+			setPosts(result.data);
 		});
 	}
 
 	const refreshPosts = () => {
-		axios('/request-posts').then((cards) => {
-			setCards(cards.data);
+		axios('/request-posts').then((result) => {
+			setPosts(result.data);
 		});
 	};
 
@@ -108,22 +127,37 @@ export default function App() {
 					</Toolbar>
 				</AppBar>
 				<Grid container spacing={{ xs: 2, sm: 2, md: 3, lg: 3 }} columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} sx={{ width: '100%', padding: 2 }}>
-					{allPosts.length > 0 ? allPosts.map((post) => (
-						<Grid item xs={1} sm={1} md={1} lg={1} key={post.id}>
-							<Card key={post.id} sx={CardStyle()} onClick={() => { openViewPostModal(post); }}>
-								<CardActionArea>
-									<CardContent>
-										<Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-											Post # {post.week}
-										</Typography>
-										<Typography variant="h5" component="div">
-											{post.fullName}
-										</Typography>
-									</CardContent>
-								</CardActionArea>
-							</Card>
-						</Grid>
-					)) :
+					{allPosts.length > 0
+						?
+						Object.values(groupBy(allPosts, 'week')).reverse().map(group => (
+							<Fragment key={group[0].week}>
+								<Divider
+									textAlign='left'
+									sx={{
+										width: '100%',
+										marginTop: '1rem'
+									}}>
+									<b>Post #{group[0].week}:</b> {getDateRange(group[0].week)}
+								</Divider>
+								{group.map(post => (
+									<Grid item xs={1} sm={1} md={1} lg={1} key={post.id}>
+										<Card key={post.id} sx={CardStyle()} onClick={() => { openViewPostModal(post); }}>
+											<CardActionArea>
+												<CardContent>
+													<Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+														{post.totalHours} Hrs.
+													</Typography>
+													<Typography variant="h5" component="div">
+														{post.fullName}
+													</Typography>
+												</CardContent>
+											</CardActionArea>
+										</Card>
+									</Grid>
+								))}
+							</Fragment>
+						))
+						:
 						<Typography variant="h6" component="div">
 							No posts found.
 						</Typography>}
@@ -215,7 +249,12 @@ export default function App() {
 							height: '75%'
 						})}
 					>
-						<ViewPostScreen openAddEditPostModal={openAddEditPostModal} loggedIn={loggedIn} post={selectedPost}></ViewPostScreen>
+						<ViewPostScreen
+							openAddEditPostModal={openAddEditPostModal}
+							loggedIn={loggedIn}
+							post={selectedPost}
+							getDateRange={getDateRange}>
+						</ViewPostScreen>
 					</Box>
 				</Modal>
 			</CookiesProvider>

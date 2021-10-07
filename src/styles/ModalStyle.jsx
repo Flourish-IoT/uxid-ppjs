@@ -7,7 +7,7 @@ export default function ModalStyle(props) {
 		bgcolor: "background.paper",
 		borderRadius: 1,
 		boxShadow: 24,
-		overflow: "scroll",
+		overflowY: "scroll",
 		p: 4,
 		outline: 0,
 		...props,

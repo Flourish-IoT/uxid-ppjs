@@ -61,7 +61,9 @@ export default function ViewPostScreen({
 				)}
 			</Stack>
 
-			<h4>Post # {post.week}</h4>
+			<h4>
+				Post #{post.week}: {rest.getDateRange(post.week)}
+			</h4>
 			<h4>Total Hours: {post.totalHours}</h4>
 
 			<Divider light></Divider>
