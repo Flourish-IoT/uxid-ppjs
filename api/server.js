@@ -6,6 +6,7 @@ const admin = require('firebase-admin');
 const express = require('express');
 const router = express.Router();
 const bodyParser = require("body-parser");
+const helmet = require("helmet");
 
 const app = express();
 const env = process.env;
@@ -13,6 +14,7 @@ const port = env.PORT || 5000;
 
 // Middleware
 
+app.use(helmet());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use("/", router);
