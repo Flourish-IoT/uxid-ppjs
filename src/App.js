@@ -113,7 +113,7 @@ export default function App() {
 				<AppBar position="static" sx={{ borderRadius: 1 }}>
 					<Toolbar>
 						<Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-							Sproutify PPJ's
+							Flourish PPJ's
 						</Typography>
 						{!loggedIn && (
 							<Button
