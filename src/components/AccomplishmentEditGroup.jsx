@@ -81,6 +81,7 @@ export default function AccomplishmentEditGroup(props) {
 					toolbarClassName='toolbarClassName'
 					wrapperClassName='wrapperClassName'
 					editorClassName='editorClassName'
+					stripPastedStyles={true}
 					toolbar={{
 						options: [
 							"inline",
