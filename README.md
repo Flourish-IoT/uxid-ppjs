@@ -1,24 +1,36 @@
-# Getting Started with Create React App
+## Getting Started
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Clone the repo to your local computer
+
+1. In your terminal `cd` to the project root folder and run `npm install`.
+2. Drop the secret.env file into the project root:
+
+    - You can find the secret.env file in Teams > UX > Files Tab > PPJ Website.
+
+3. Rename the file from "secret.env" to ".env"
 
 ## Available Scripts
 
 In the project directory, you can run:
 
-### `npm run dev`
+### Dev Build: `npm run dev`
 
 Runs the app in the development mode.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+The page should automatically open, if not goto http://localhost:3000
 
-### `npm start`
+React will re-compile and reload if you make edits.
 
-Runs the server.js express server.\
+### Launch Express Server: `npm start`
+
+Runs the server.js express server.
+
 This serves the build folder if it is present, like for the Heroku server.
 
-### `npm run build`
+### For Testing Purposes: `npm run build`
 
-Builds the React app into `./build`.\
-Open `localhost:5000` to see the obfuscated build version.
+Builds the React app into `./build`.
+
+This does not automatically build.
+
+Open http://localhost:5000 to see the obfuscated build version. You cannot debug this version.
