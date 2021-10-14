@@ -78,7 +78,12 @@ export default function ViewPostScreen({
 					}}
 				>
 					<h3>{a.title}</h3>
-					<p dangerouslySetInnerHTML={{ __html: a.description }} />
+					<p
+						dangerouslySetInnerHTML={{ __html: a.description }}
+						style={{
+							lineHeight: "1.5rem",
+						}}
+					/>
 					<h4>Hours: {a.hours}</h4>
 				</div>
 			))}
@@ -92,7 +97,8 @@ export default function ViewPostScreen({
 						key={index}
 						dangerouslySetInnerHTML={{ __html: p }}
 						style={{
-							marginBottom: "0.5rem",
+							marginBottom: "1rem",
+							lineHeight: "1.5rem",
 						}}
 					/>
 				))}
@@ -107,7 +113,8 @@ export default function ViewPostScreen({
 						key={index}
 						dangerouslySetInnerHTML={{ __html: o }}
 						style={{
-							marginBottom: "0.5rem",
+							marginBottom: "1rem",
+							lineHeight: "1.5rem",
 						}}
 					/>
 				))}
