@@ -21,8 +21,4 @@ This serves the build folder if it is present, like for the Heroku server.
 ### `npm run build`
 
 Builds the React app into `./build`.\
-Open `localhost:5000` to see the build version.
-
-You will need to add the proxy to the package.json file to connect to the internal API:
-
-`"proxy": "http://localhost:5000"` <- Do not commit this
+Open `localhost:5000` to see the obfuscated build version.
