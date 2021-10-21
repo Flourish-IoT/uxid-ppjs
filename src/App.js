@@ -167,7 +167,7 @@ export default function App() {
 						id='speedDial'
 						ariaLabel="Add Post"
 						open={false}
-						sx={{ position: 'absolute', bottom: 32, right: 32 }}
+						sx={{ position: 'fixed', bottom: 32, right: 32 }}
 						icon={<SpeedDialIcon />}
 						onClick={() => { openAddEditPostModal('add', undefined); }}
 					/>
@@ -217,10 +217,10 @@ export default function App() {
 							onClose={() => { setConfirmDiscardOpen(false); }}
 							aria-describedby='alert-dialog-slide-description'
 						>
-							<DialogTitle>Discard Post?</DialogTitle>
+							<DialogTitle>Discard {addEditMode == 'add' ? 'Post' : 'Changes'}?</DialogTitle>
 							<DialogContent>
 								<DialogContentText id='alert-dialog-slide-description'>
-									Your are about to discard your changes, it cannot be undone.
+									Your are about to discard {addEditMode == 'add' ? 'this post' : 'your changes'}, it cannot be undone.
 								</DialogContentText>
 							</DialogContent>
 							<DialogActions>
