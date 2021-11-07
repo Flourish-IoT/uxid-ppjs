@@ -73,6 +73,12 @@ export default function AccomplishmentEditGroup(props) {
 						sx={{
 							width: "50%",
 						}}
+						InputProps={{
+							inputProps: {
+								max: 100,
+								min: 0,
+							},
+						}}
 					/>
 				</Stack>
 				<Editor

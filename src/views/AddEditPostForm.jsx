@@ -43,7 +43,6 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 
 	const blankFormVals = {
 		week: "",
-		totalHours: "",
 		accomplishments: [{ title: "", hours: "", description: "" }],
 		plans: [""],
 		obstacles: [""],
@@ -173,22 +172,6 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 							inputProps: {
 								max: 50,
 								min: 1,
-							},
-						}}
-					/>
-					<TextField
-						variant='outlined'
-						sx={{ width: "50%" }}
-						type='number'
-						required
-						label='Total Hours'
-						name='totalHours'
-						value={values.totalHours}
-						onInput={handleInputChange}
-						InputProps={{
-							inputProps: {
-								max: 40,
-								min: 0,
 							},
 						}}
 					/>
