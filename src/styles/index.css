@@ -17,6 +17,10 @@ body {
 code {
 	font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
 		monospace;
+	font-size: 15px;
+	background-color: #c4c4c4;
+	border-radius: 2px;
+	padding: 0 4px;
 }
 
 .rdw-editor-wrapper {
