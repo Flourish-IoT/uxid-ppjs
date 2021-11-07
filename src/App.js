@@ -126,7 +126,14 @@ export default function App() {
 						)}
 					</Toolbar>
 				</AppBar>
-				<Grid container spacing={{ xs: 2, sm: 2, md: 3, lg: 3 }} columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} sx={{ width: '100%', padding: 2 }}>
+				<Grid
+					container
+					spacing={{ xs: 2, sm: 2, md: 3, lg: 3 }}
+					columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}
+					sx={{
+						paddingLeft: { xs: 2, sm: 2, md: 3, lg: 3 }
+					}}
+				>
 					{allPosts.length > 0
 						?
 						Object.values(groupBy(allPosts, 'week')).reverse().map((group, groupIdx) => (
@@ -135,7 +142,8 @@ export default function App() {
 									textAlign='left'
 									sx={{
 										width: '100%',
-										margin: `${groupIdx == 0 ? '2rem 0 1rem 0' : '1rem 0'}`
+										margin: `${groupIdx == 0 ? '2rem 0 1rem 0' : '1rem 0'}`,
+										alignItems: 'start'
 									}}>
 									<b>Post #{group[0].week}:</b> {getDateRange(group[0].week)}
 								</Divider>
