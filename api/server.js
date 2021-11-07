@@ -43,7 +43,7 @@ const db = admin.firestore();
 
 const postsRef = db.collection('posts');
 const getPosts = async () => {
-    let [users, postsResult] = await Promise.all([getUsers(), postsRef.orderBy('week', 'asc').get()]);
+    let [users, postsResult] = await Promise.all([getUsers(), postsRef.orderBy('week', 'asc').orderBy('author', 'asc').get()]);
 
     const posts = postsResult.docs.map(d => {
         const post = d.data();
