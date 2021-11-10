@@ -1,6 +1,6 @@
 {
-	"name": "ppj-website",
-	"version": "0.1.0",
+	"name": "uxid-ppjs",
+	"version": "1.0.0",
 	"private": true,
 	"dependencies": {
 		"@emotion/react": "^11.4.1",
@@ -48,9 +48,18 @@
 		]
 	},
 	"description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
-	"main": "index.js",
+	"main": "src/index.js",
 	"keywords": [],
-	"author": "",
+	"author": "Hunter Hampton",
 	"license": "ISC",
-	"proxy": "http://localhost:5000"
+	"proxy": "http://localhost:5000",
+	"devDependencies": {},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Flourish-IoT/uxid-ppjs.git"
+	},
+	"bugs": {
+		"url": "https://github.com/Flourish-IoT/uxid-ppjs/issues"
+	},
+	"homepage": "https://github.com/Flourish-IoT/uxid-ppjs#readme"
 }
