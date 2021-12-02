@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import axios from "axios";
-import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
-import ControlPointIcon from "@mui/icons-material/ControlPoint";
-import HelpIcon from "@mui/icons-material/Help";
-import CodeIcon from "@mui/icons-material/Code";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
+import React, { useState } from 'react';
+import axios from 'axios';
+import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
+import ControlPointIcon from '@mui/icons-material/ControlPoint';
+import HelpIcon from '@mui/icons-material/Help';
+import CodeIcon from '@mui/icons-material/Code';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import {
 	TextField,
 	Stack,
@@ -23,12 +23,12 @@ import {
 	MenuItem,
 	ListItemIcon,
 	ListItemText,
-} from "@mui/material";
+} from '@mui/material';
 
-import AccomplishmentEditGroup from "../components/AccomplishmentEditGroup";
-import PlanEditGroup from "../components/PlanEditGroup";
-import ObstacleEditGroup from "../components/ObstacleEditGroup";
-import { useForm, Form } from "../components/useForm";
+import AccomplishmentEditGroup from '../components/AccomplishmentEditGroup';
+import PlanEditGroup from '../components/PlanEditGroup';
+import ObstacleEditGroup from '../components/ObstacleEditGroup';
+import { useForm, Form } from '../components/useForm';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
 	return <Slide direction='up' ref={ref} {...props} />;
@@ -42,13 +42,13 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 	const handleConfirmDeleteClose = () => setConfirmDeleteOpen(false);
 
 	const blankFormVals = {
-		week: "",
-		accomplishments: [{ title: "", hours: "", description: "" }],
-		plans: [""],
-		obstacles: [""],
+		week: '',
+		accomplishments: [{ title: '', hours: '', description: '' }],
+		plans: [''],
+		obstacles: [''],
 	};
 
-	const initFormVals = addEditMode == "add" ? blankFormVals : post;
+	const initFormVals = addEditMode == 'add' ? blankFormVals : post;
 
 	const { values, setValues, resetForm, handleInputChange } =
 		useForm(initFormVals);
@@ -71,26 +71,26 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 		return `-=-=-= Accomplishments =-=-=-
 			${values.accomplishments.map((r, index) => {
 				return (
-					"\n" +
+					'\n' +
 					(index + 1) +
-					"." +
-					"\n            Title:   " +
+					'.' +
+					'\n            Title:   ' +
 					r.title +
-					"\n            Hours:   " +
+					'\n            Hours:   ' +
 					r.hours +
-					"\n      Description:   " +
+					'\n      Description:   ' +
 					r.description
 				);
 			})}
 
 			\n-=-=-= Plans =-=-=-
 			${values.plans.map((r) => {
-				return "\n" + r;
+				return '\n' + r;
 			})}
 
 			\n-=-=-= Obstacles =-=-=-
 			${values.obstacles.map((r) => {
-				return "\n" + r;
+				return '\n' + r;
 			})}
 		`;
 	};
@@ -98,14 +98,14 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 	const downloadPost = (fileName, source) => {
 		const getText = () => {
 			switch (source) {
-				case "display":
-					return postAsText().replace(/<\/?[^>]+(>|$)/g, "");
-				case "json":
+				case 'display':
+					return postAsText().replace(/<\/?[^>]+(>|$)/g, '');
+				case 'json':
 					return JSON.stringify(values);
 				default:
 					return (
 						postAsText() +
-						"\n\n========== As JSON ==========\n\n" +
+						'\n\n========== As JSON ==========\n\n' +
 						JSON.stringify(values)
 					);
 			}
@@ -113,13 +113,13 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 
 		const text = getText();
 
-		const element = document.createElement("a");
+		const element = document.createElement('a');
 		element.setAttribute(
-			"href",
-			"data:text/plain;charset=utf-8," + encodeURIComponent(text)
+			'href',
+			'data:text/plain;charset=utf-8,' + encodeURIComponent(text)
 		);
-		element.setAttribute("download", fileName);
-		element.style.display = "none";
+		element.setAttribute('download', fileName);
+		element.style.display = 'none';
 		document.body.appendChild(element);
 		element.click();
 		document.body.removeChild(element);
@@ -128,16 +128,15 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 	const savePost = () => {
 		setIsSaving(true);
 		axios
-			.post("/save-post", values)
+			.post('/save-post', values)
 			.then((response) => {
 				setTimeout(() => {
 					// Save buffer
 					rest.refreshPosts();
-					rest.setAddEditPostModalOpen(false);
 				}, 100);
 			})
 			.catch((error) => {
-				downloadPost("PPJ Backup", "all");
+				downloadPost('PPJ Backup', 'all');
 			})
 			.finally(() => {
 				setIsSaving(false);
@@ -145,7 +144,7 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 	};
 
 	const deletePost = async () => {
-		await axios.post("/delete-post", {
+		await axios.post('/delete-post', {
 			postId: post.id,
 		});
 
@@ -161,7 +160,7 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 				<Stack spacing={1} direction='row'>
 					<TextField
 						variant='outlined'
-						sx={{ width: "50%" }}
+						sx={{ width: '50%' }}
 						type='number'
 						required
 						label='Post #'
@@ -204,7 +203,7 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 							value={values.accomplishments[index]}
 							handleInputChange={handleInputChange}
 							deletePostGroup={() => {
-								deletePostGroup("accomplishments", index);
+								deletePostGroup('accomplishments', index);
 							}}
 						></AccomplishmentEditGroup>
 					))}
@@ -212,7 +211,7 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 
 				<IconButton
 					aria-label='add'
-					onClick={() => addPostGroup("accomplishments")}
+					onClick={() => addPostGroup('accomplishments')}
 				>
 					<ControlPointIcon />
 				</IconButton>
@@ -243,7 +242,7 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 							value={values.plans[index]}
 							handleInputChange={handleInputChange}
 							deletePostGroup={() => {
-								deletePostGroup("plans", index);
+								deletePostGroup('plans', index);
 							}}
 						></PlanEditGroup>
 					))}
@@ -251,7 +250,7 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 
 				<IconButton
 					aria-label='add'
-					onClick={() => addPostGroup("plans")}
+					onClick={() => addPostGroup('plans')}
 				>
 					<ControlPointIcon />
 				</IconButton>
@@ -282,7 +281,7 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 							value={values.obstacles[index]}
 							handleInputChange={handleInputChange}
 							deletePostGroup={() => {
-								deletePostGroup("obstacles", index);
+								deletePostGroup('obstacles', index);
 							}}
 						></ObstacleEditGroup>
 					))}
@@ -290,7 +289,7 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 
 				<IconButton
 					aria-label='add'
-					onClick={() => addPostGroup("obstacles")}
+					onClick={() => addPostGroup('obstacles')}
 				>
 					<ControlPointIcon />
 				</IconButton>
@@ -298,14 +297,14 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 			<Stack
 				spacing={1}
 				direction={{
-					xs: "column",
-					sm: "row",
+					xs: 'column',
+					sm: 'row',
 				}}
 				sx={{
-					justifyContent: "flex-end",
+					justifyContent: 'flex-end',
 				}}
 			>
-				{addEditMode == "edit" && (
+				{addEditMode == 'edit' && (
 					<Button
 						variant='outlined'
 						color='error'
@@ -327,7 +326,7 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 							<Menu {...bindMenu(popupState)}>
 								<MenuItem
 									onClick={() => {
-										downloadPost("PPJ Draft", "display");
+										downloadPost('PPJ Draft', 'display');
 										popupState.close();
 									}}
 								>
@@ -338,7 +337,7 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 								</MenuItem>
 								<MenuItem
 									onClick={() => {
-										downloadPost("PPJ Draft", "json");
+										downloadPost('PPJ Draft', 'json');
 										popupState.close();
 									}}
 								>
@@ -356,7 +355,7 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 					variant='contained'
 					onClick={savePost}
 				>
-					{addEditMode == "add" ? "Publish" : "Save"}
+					{addEditMode == 'add' ? 'Publish' : 'Save'}
 				</Button>
 			</Stack>
 			<Dialog
