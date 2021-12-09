@@ -54,10 +54,9 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 
 	const initFormVals = addEditMode == 'add' ? blankFormVals : post;
 
-	const { values, setValues, resetForm, handleInputChange } =
-		useForm(initFormVals);
+	const { values, setValues, resetForm, handleInputChange } = useForm(initFormVals);
 
-	const addPostGroup = (groupKey) => {
+	const addPostGroup = groupKey => {
 		values[groupKey][values[groupKey].length] = blankFormVals[groupKey][0];
 		setValues({
 			...values,
@@ -88,12 +87,12 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 			})}
 
 			\n-=-=-= Plans =-=-=-
-			${values.plans.map((r) => {
+			${values.plans.map(r => {
 				return '\n' + r;
 			})}
 
 			\n-=-=-= Obstacles =-=-=-
-			${values.obstacles.map((r) => {
+			${values.obstacles.map(r => {
 				return '\n' + r;
 			})}
 		`;
@@ -107,21 +106,14 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 				case 'json':
 					return JSON.stringify(values);
 				default:
-					return (
-						postAsText() +
-						'\n\n========== As JSON ==========\n\n' +
-						JSON.stringify(values)
-					);
+					return postAsText() + '\n\n========== As JSON ==========\n\n' + JSON.stringify(values);
 			}
 		};
 
 		const text = getText();
 
 		const element = document.createElement('a');
-		element.setAttribute(
-			'href',
-			'data:text/plain;charset=utf-8,' + encodeURIComponent(text)
-		);
+		element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
 		element.setAttribute('download', fileName);
 		element.style.display = 'none';
 		document.body.appendChild(element);
@@ -133,13 +125,14 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 		setIsSaving(true);
 		axios
 			.post('/save-post', values)
-			.then((response) => {
+			.then(response => {
 				setTimeout(() => {
 					// Save buffer
 					rest.refreshPosts();
+					rest.setAddEditPostModalOpen(false);
 				}, 100);
 			})
-			.catch((error) => {
+			.catch(error => {
 				downloadPost('PPJ Backup', 'all');
 			})
 			.finally(() => {
@@ -200,10 +193,8 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 					<Tooltip
 						title={
 							<h3>
-								Narrative of specific task. Include visual
-								samples of art (jpg/png), post links to github
-								repo, codepen embeds, youtube embeds, or
-								prototypes to show proof of completed work.
+								Narrative of specific task. Include visual samples of art (jpg/png), post links to github repo,
+								codepen embeds, youtube embeds, or prototypes to show proof of completed work.
 							</h3>
 						}
 					>
@@ -228,10 +219,7 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 					))}
 				</Stack>
 
-				<IconButton
-					aria-label='add'
-					onClick={() => addPostGroup('accomplishments')}
-				>
+				<IconButton aria-label='add' onClick={() => addPostGroup('accomplishments')}>
 					<ControlPointIcon />
 				</IconButton>
 
@@ -240,8 +228,7 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 					<Tooltip
 						title={
 							<h3>
-								What specific tasks are you going to work on,
-								and why are thy relevant to the project at this
+								What specific tasks are you going to work on, and why are thy relevant to the project at this
 								point in time.
 							</h3>
 						}
@@ -267,10 +254,7 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 					))}
 				</Stack>
 
-				<IconButton
-					aria-label='add'
-					onClick={() => addPostGroup('plans')}
-				>
+				<IconButton aria-label='add' onClick={() => addPostGroup('plans')}>
 					<ControlPointIcon />
 				</IconButton>
 
@@ -279,9 +263,8 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 					<Tooltip
 						title={
 							<h3>
-								What could possibly stand in your way of
-								completing items listed in “Plans", and how can
-								you overcome them?
+								What could possibly stand in your way of completing items listed in “Plans", and how can you
+								overcome them?
 							</h3>
 						}
 					>
@@ -306,10 +289,7 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 					))}
 				</Stack>
 
-				<IconButton
-					aria-label='add'
-					onClick={() => addPostGroup('obstacles')}
-				>
+				<IconButton aria-label='add' onClick={() => addPostGroup('obstacles')}>
 					<ControlPointIcon />
 				</IconButton>
 			</Stack>
@@ -324,22 +304,14 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 				}}
 			>
 				{addEditMode == 'edit' && (
-					<Button
-						variant='outlined'
-						color='error'
-						onClick={handleConfirmDeleteOpen}
-					>
+					<Button variant='outlined' color='error' onClick={handleConfirmDeleteOpen}>
 						Delete
 					</Button>
 				)}
 				<PopupState variant='popover' popupId='demo-popup-menu'>
-					{(popupState) => (
+					{popupState => (
 						<React.Fragment>
-							<Button
-								variant='outlined'
-								endIcon={<ArrowDropDownIcon />}
-								{...bindTrigger(popupState)}
-							>
+							<Button variant='outlined' endIcon={<ArrowDropDownIcon />} {...bindTrigger(popupState)}>
 								Download Draft
 							</Button>
 							<Menu {...bindMenu(popupState)}>
@@ -369,11 +341,7 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 						</React.Fragment>
 					)}
 				</PopupState>
-				<Button
-					disabled={isSaving}
-					variant='contained'
-					onClick={savePost}
-				>
+				<Button disabled={isSaving} variant='contained' onClick={savePost}>
 					{addEditMode == 'add' ? 'Publish' : 'Save'}
 				</Button>
 			</Stack>
