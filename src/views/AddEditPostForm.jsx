@@ -23,6 +23,9 @@ import {
 	MenuItem,
 	ListItemIcon,
 	ListItemText,
+	FormControl,
+	InputLabel,
+	Select,
 } from '@mui/material';
 
 import AccomplishmentEditGroup from '../components/AccomplishmentEditGroup';
@@ -42,6 +45,7 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 	const handleConfirmDeleteClose = () => setConfirmDeleteOpen(false);
 
 	const blankFormVals = {
+		term: 'Winter',
 		week: '',
 		accomplishments: [{ title: '', hours: '', description: '' }],
 		plans: [''],
@@ -158,6 +162,21 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 		<Form>
 			<Stack id='postFormPrintZone' spacing={1} direction='column'>
 				<Stack spacing={1} direction='row'>
+					<FormControl sx={{ width: '50%' }}>
+						<InputLabel id='term-select-label'>Term</InputLabel>
+						<Select
+							labelId='term-select-label'
+							id='term-select'
+							value={values.term}
+							label='Term'
+							name='term'
+							onChange={handleInputChange}
+						>
+							<MenuItem value={'Fall'}>Fall</MenuItem>
+							<MenuItem value={'Winter'}>Winter</MenuItem>
+							<MenuItem value={'Spring'}>Spring</MenuItem>
+						</Select>
+					</FormControl>
 					<TextField
 						variant='outlined'
 						sx={{ width: '50%' }}
@@ -169,7 +188,7 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 						onInput={handleInputChange}
 						InputProps={{
 							inputProps: {
-								max: 50,
+								max: 10,
 								min: 1,
 							},
 						}}

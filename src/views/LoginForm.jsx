@@ -1,8 +1,13 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { TextField, Stack, Button } from "@mui/material";
+import React, { useState } from 'react';
+import axios from 'axios';
+import { TextField, Stack, Button } from '@mui/material';
 
-import { useForm, Form } from "../components/useForm";
+import { useForm, Form } from '../components/useForm';
+
+const initFormVals = {
+	username: '',
+	password: '',
+};
 
 export default function LoginForm(props) {
 	const [isLoading, setIsLoading] = useState(false);
@@ -11,11 +16,11 @@ export default function LoginForm(props) {
 		setIsLoading(true);
 
 		axios
-			.post("/login", {
+			.post('/login', {
 				username: values.username,
 				password: values.password,
 			})
-			.then((res) => {
+			.then(res => {
 				props.closeModalFunc();
 				props.setloggedIn(true);
 			})
@@ -24,13 +29,7 @@ export default function LoginForm(props) {
 			});
 	};
 
-	const initFormVals = {
-		username: "",
-		password: "",
-	};
-
-	const { values, setValues, resetForm, handleInputChange } =
-		useForm(initFormVals);
+	const { values, setValues, resetForm, handleInputChange } = useForm(initFormVals);
 
 	return (
 		<Form>
@@ -52,11 +51,7 @@ export default function LoginForm(props) {
 					value={values.password}
 					onInput={handleInputChange}
 				/>
-				<Button
-					disabled={isLoading}
-					variant='contained'
-					onClick={handleLogin}
-				>
+				<Button disabled={isLoading} variant='contained' onClick={handleLogin}>
 					Submit
 				</Button>
 			</Stack>

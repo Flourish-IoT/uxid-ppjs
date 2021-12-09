@@ -1,21 +1,12 @@
-import { useState } from "react";
-import { useCookies } from "react-cookie";
-import { CopyToClipboard } from "react-copy-to-clipboard";
-import LinkIcon from "@mui/icons-material/Link";
-import {
-	Divider,
-	Stack,
-	Button,
-	IconButton,
-	Tooltip,
-	Box,
-} from "@mui/material";
+import { useState } from 'react';
+import { useCookies } from 'react-cookie';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import LinkIcon from '@mui/icons-material/Link';
+import { Divider, Stack, Button, IconButton, Tooltip, Box } from '@mui/material';
 
-export default function ViewPostScreen({
-	post,
-	openAddEditPostModal,
-	...rest
-}) {
+import { getDateRange } from '../data/common';
+
+export default function ViewPostScreen({ post, openAddEditPostModal, ...rest }) {
 	const [cookies, setCookie] = useCookies({});
 	const [copiedText, setCopiedText] = useState();
 	const postLink = `${window.location.origin}?id=${post.id}`;
@@ -28,32 +19,20 @@ export default function ViewPostScreen({
 				{/* Spacer */}
 				<Box sx={{ flexGrow: 1 }} />
 
-				<CopyToClipboard
-					text={postLink}
-					onCopy={() => setCopiedText(postLink)}
-				>
-					<Tooltip
-						placement='top'
-						title={
-							<h3>
-								{copiedText == postLink
-									? "Copied!"
-									: "Copy post link"}
-							</h3>
-						}
-					>
+				<CopyToClipboard text={postLink} onCopy={() => setCopiedText(postLink)}>
+					<Tooltip placement='top' title={<h3>{copiedText === postLink ? 'Copied!' : 'Copy post link'}</h3>}>
 						<IconButton color='primary' aria-label='Copy post link'>
 							<LinkIcon />
 						</IconButton>
 					</Tooltip>
 				</CopyToClipboard>
 
-				{rest.loggedIn && cookies.userId == post.author && (
+				{rest.loggedIn && Number(cookies.userId) === post.author && (
 					<Button
-						sx={{ alignSelf: "center" }}
+						sx={{ alignSelf: 'center' }}
 						variant='contained'
 						onClick={() => {
-							openAddEditPostModal("edit", post);
+							openAddEditPostModal('edit', post);
 						}}
 					>
 						Edit Post
@@ -62,7 +41,7 @@ export default function ViewPostScreen({
 			</Stack>
 
 			<h4>
-				Post #{post.week}: {rest.getDateRange(post.week)}
+				{post.term} | Post #{post.week} | {getDateRange(post.term, post.week)}
 			</h4>
 			<h4>Total Hours: {post.totalHours}</h4>
 
@@ -73,15 +52,15 @@ export default function ViewPostScreen({
 				<div
 					key={index}
 					style={{
-						borderLeft: "2px solid black",
-						paddingLeft: "1rem",
+						borderLeft: '2px solid black',
+						paddingLeft: '1rem',
 					}}
 				>
 					<h3>{a.title}</h3>
 					<p
 						dangerouslySetInnerHTML={{ __html: a.description }}
 						style={{
-							lineHeight: "1.5rem",
+							lineHeight: '1.5rem',
 						}}
 					/>
 					<h4>Hours: {a.hours}</h4>
@@ -97,8 +76,8 @@ export default function ViewPostScreen({
 						key={index}
 						dangerouslySetInnerHTML={{ __html: p }}
 						style={{
-							marginBottom: "1rem",
-							lineHeight: "1.5rem",
+							marginBottom: '1rem',
+							lineHeight: '1.5rem',
 						}}
 					/>
 				))}
@@ -113,8 +92,8 @@ export default function ViewPostScreen({
 						key={index}
 						dangerouslySetInnerHTML={{ __html: o }}
 						style={{
-							marginBottom: "1rem",
-							lineHeight: "1.5rem",
+							marginBottom: '1rem',
+							lineHeight: '1.5rem',
 						}}
 					/>
 				))}

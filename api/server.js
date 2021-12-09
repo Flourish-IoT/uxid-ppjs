@@ -45,7 +45,7 @@ const postsRef = db.collection('posts');
 const getPosts = async () => {
     let [users, postsResult] = await Promise.all([getUsers(), postsRef.orderBy('week', 'asc').orderBy('author', 'asc').get()]);
 
-    const posts = postsResult.docs.map(d => {
+    return postsResult.docs.map(d => {
         const post = d.data();
         post.totalHours = post.accomplishments.map(a => a.hours).reduce((a, b) => a + b, 0); // 0 is the default # to add
         const author = users.find(u => u.id == post.author);
@@ -54,8 +54,6 @@ const getPosts = async () => {
         }
         return post;
     });
-
-    return posts;
 };
 
 const deletePost = async (postId) => {
