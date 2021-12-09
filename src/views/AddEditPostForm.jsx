@@ -155,7 +155,7 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 		<Form>
 			<Stack id='postFormPrintZone' spacing={1} direction='column'>
 				<Stack spacing={1} direction='row'>
-					<FormControl sx={{ width: '50%' }}>
+					<FormControl fullWidth>
 						<InputLabel id='term-select-label'>Term</InputLabel>
 						<Select
 							labelId='term-select-label'
@@ -164,6 +164,7 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 							label='Term'
 							name='term'
 							onChange={handleInputChange}
+							sx={{ width: '50%' }}
 						>
 							{['Fall', 'Winter', 'Spring'].map(term => (
 								<MenuItem key={term} value={term}>
@@ -171,25 +172,6 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 								</MenuItem>
 							))}
 						</Select>
-					</FormControl>
-					{/* <TextField
-						variant='outlined'
-						sx={{ width: '50%' }}
-						type='number'
-						required
-						label='Post #'
-						name='week'
-						value={values.week}
-						onInput={handleInputChange}
-						InputProps={{
-							inputProps: {
-								max: 10,
-								min: 1,
-							},
-						}}
-					/> */}
-
-					<FormControl sx={{ width: '50%' }}>
 						<InputLabel id='week-select-label'>Post #</InputLabel>
 						<Select
 							labelId='week-select-label'
@@ -198,6 +180,7 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 							label='Post #'
 							name='week'
 							onChange={handleInputChange}
+							sx={{ width: '50%' }}
 						>
 							{getWeekNumsForTerm(values.term).map(week => {
 								week = Number(week);
@@ -365,7 +348,7 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 					)}
 				</PopupState>
 				<Button disabled={isSaving} variant='contained' onClick={savePost}>
-					{addEditMode == 'add' ? 'Publish' : 'Save'}
+					{addEditMode === 'add' ? 'Publish' : 'Save'}
 				</Button>
 			</Stack>
 			<Dialog
