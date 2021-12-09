@@ -7,7 +7,6 @@ import CodeIcon from '@mui/icons-material/Code';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import {
-	TextField,
 	Stack,
 	Button,
 	Divider,
@@ -32,6 +31,7 @@ import AccomplishmentEditGroup from '../components/AccomplishmentEditGroup';
 import PlanEditGroup from '../components/PlanEditGroup';
 import ObstacleEditGroup from '../components/ObstacleEditGroup';
 import { useForm, Form } from '../components/useForm';
+import { getWeekNumsForTerm } from '../data/common';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
 	return <Slide direction='up' ref={ref} {...props} />;
@@ -46,15 +46,15 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 
 	const blankFormVals = {
 		term: 'Winter',
-		week: '',
+		week: Number(getWeekNumsForTerm('Winter')[0]),
 		accomplishments: [{ title: '', hours: '', description: '' }],
 		plans: [''],
 		obstacles: [''],
 	};
 
-	const initFormVals = addEditMode == 'add' ? blankFormVals : post;
+	const initFormVals = addEditMode === 'add' ? blankFormVals : post;
 
-	const { values, setValues, resetForm, handleInputChange } = useForm(initFormVals);
+	const { values, setValues, handleInputChange } = useForm(initFormVals);
 
 	const addPostGroup = groupKey => {
 		values[groupKey][values[groupKey].length] = blankFormVals[groupKey][0];
@@ -165,12 +165,14 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 							name='term'
 							onChange={handleInputChange}
 						>
-							<MenuItem value={'Fall'}>Fall</MenuItem>
-							<MenuItem value={'Winter'}>Winter</MenuItem>
-							<MenuItem value={'Spring'}>Spring</MenuItem>
+							{['Fall', 'Winter', 'Spring'].map(term => (
+								<MenuItem key={term} value={term}>
+									{term}
+								</MenuItem>
+							))}
 						</Select>
 					</FormControl>
-					<TextField
+					{/* <TextField
 						variant='outlined'
 						sx={{ width: '50%' }}
 						type='number'
@@ -185,7 +187,28 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 								min: 1,
 							},
 						}}
-					/>
+					/> */}
+
+					<FormControl sx={{ width: '50%' }}>
+						<InputLabel id='week-select-label'>Post #</InputLabel>
+						<Select
+							labelId='week-select-label'
+							id='week-select'
+							value={values.week}
+							label='Post #'
+							name='week'
+							onChange={handleInputChange}
+						>
+							{getWeekNumsForTerm(values.term).map(week => {
+								week = Number(week);
+								return (
+									<MenuItem key={week} value={Number(week)}>
+										{week}
+									</MenuItem>
+								);
+							})}
+						</Select>
+					</FormControl>
 				</Stack>
 
 				<Divider textAlign='left' light>
