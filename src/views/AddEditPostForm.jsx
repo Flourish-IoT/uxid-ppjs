@@ -7,6 +7,7 @@ import CodeIcon from '@mui/icons-material/Code';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import {
+	Box,
 	Stack,
 	Button,
 	Divider,
@@ -153,18 +154,18 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 
 	return (
 		<Form>
-			<Stack id='postFormPrintZone' spacing={1} direction='column'>
+			<Stack spacing={1} direction='column'>
 				<Stack spacing={1} direction='row'>
-					<FormControl fullWidth>
+					<FormControl sx={{ width: '50%' }}>
 						<InputLabel id='term-select-label'>Term</InputLabel>
 						<Select
+							fullWidth
 							labelId='term-select-label'
 							id='term-select'
 							value={values.term}
 							label='Term'
 							name='term'
 							onChange={handleInputChange}
-							sx={{ width: '50%' }}
 						>
 							{['Fall', 'Winter', 'Spring'].map(term => (
 								<MenuItem key={term} value={term}>
@@ -172,15 +173,17 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 								</MenuItem>
 							))}
 						</Select>
+					</FormControl>
+					<FormControl sx={{ width: '50%' }}>
 						<InputLabel id='week-select-label'>Post #</InputLabel>
 						<Select
+							fullWidth
 							labelId='week-select-label'
 							id='week-select'
 							value={values.week}
 							label='Post #'
 							name='week'
 							onChange={handleInputChange}
-							sx={{ width: '50%' }}
 						>
 							{getWeekNumsForTerm(values.term).map(week => {
 								week = Number(week);
