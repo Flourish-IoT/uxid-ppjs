@@ -45,9 +45,6 @@ export default function PostsList({ posts, openViewPostModal }) {
 									>
 										<CardActionArea>
 											<CardContent>
-												<Typography sx={{ fontSize: 14 }} color='text.secondary' gutterBottom>
-													{post.totalHours} Hrs.
-												</Typography>
 												<Typography variant='h5' component='div'>
 													{post.fullName}
 												</Typography>
