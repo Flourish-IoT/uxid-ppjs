@@ -32,7 +32,7 @@ export interface RangeList {
 }
 
 type Term = 'Fall' | 'Winter' | 'Spring';
-type Week = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 24 | 25;
+type Week = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16;
 
 export const Ranges: RangeList = {
 	fall: {
@@ -47,13 +47,13 @@ export const Ranges: RangeList = {
 		8: '11/18/21 - 12/01/21', // +1 week for Thanksgiving break
 	},
 	winter: {
-		9: '12/02/22 - 01/12/22', // Includes winter break
-		10: '01/13/22 - 01/26/22',
-		11: '01/27/22 - 02/09/22',
-		12: '01/10/22 - 01/23/22',
+		9: '12/02/22 - 01/19/22', // Includes winter break
+		10: '01/20/22 - 02/02/22',
+		11: '02/03/22 - 02/16/22',
+		12: '01/17/22 - 03/02/22',
 	},
 	spring: {
-		13: '01/24/22 - TDB',
+		13: '03/03/22 - TDB',
 		14: 'TDB - TDB',
 		15: 'TDB - TDB',
 		16: 'TDB - TDB',
