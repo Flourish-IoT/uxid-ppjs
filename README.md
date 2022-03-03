@@ -33,4 +33,4 @@ Builds the React app into `./build`.
 
 This does not automatically build.
 
-Open http://localhost:5000 to see the obfuscated build version. You cannot debug this version.
+Open http://localhost:5050 to see the obfuscated build version. You cannot debug this version.

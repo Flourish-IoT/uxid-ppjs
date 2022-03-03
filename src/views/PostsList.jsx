@@ -17,7 +17,7 @@ export default function PostsList({ posts, openViewPostModal }) {
 			container
 			spacing={{ xs: 2, sm: 2, md: 3, lg: 3 }}
 			columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}
-			sx={{ paddingLeft: { xs: 2, sm: 2, md: 3, lg: 3 } }}
+			sx={{ paddingLeft: { xs: 2, sm: 2, md: 3, lg: 3 }, paddingTop: 3 }}
 		>
 			{posts.length > 0 ? (
 				Object.values(groupBy(posts, 'week'))

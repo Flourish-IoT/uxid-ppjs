@@ -9,7 +9,7 @@ const bodyParser = require("body-parser");
 
 const app = express();
 const env = process.env;
-const port = env.PORT || 5000;
+const port = env.PORT || 5050;
 
 // Middleware
 
