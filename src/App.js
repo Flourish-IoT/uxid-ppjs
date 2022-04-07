@@ -15,7 +15,7 @@ import {
 	Slide,
 } from '@mui/material';
 
-import { useGetPosts } from './data/common';
+import { DefaultTerm, useGetPosts } from './data/common';
 import PPJAppBar from './components/PPJAppBar';
 import ModalStyle from "./styles/ModalStyle";
 import LoginForm from './views/LoginForm';
@@ -30,7 +30,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function App() {
 	const { id: query } = qs.parse(window.location.search, { ignoreQueryPrefix: true });
 
-	const [termFilter, setTermFilter] = useState('Winter');
+	const [termFilter, setTermFilter] = useState(DefaultTerm);
 	const { data: posts, isLoading: postsIsLoading, refetch } = useGetPosts();
 
 	const [loginModalOpen, setLoginModalOpen] = useState(false);

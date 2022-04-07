@@ -7,7 +7,6 @@ import CodeIcon from '@mui/icons-material/Code';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import {
-	Box,
 	Stack,
 	Button,
 	Divider,
@@ -28,6 +27,7 @@ import {
 	Select,
 } from '@mui/material';
 
+import { DefaultTerm } from '../data/common';
 import AccomplishmentEditGroup from '../components/AccomplishmentEditGroup';
 import PlanEditGroup from '../components/PlanEditGroup';
 import ObstacleEditGroup from '../components/ObstacleEditGroup';
@@ -46,8 +46,8 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 	const handleConfirmDeleteClose = () => setConfirmDeleteOpen(false);
 
 	const blankFormVals = {
-		term: 'Winter',
-		week: Number(getWeekNumsForTerm('Winter')[0]),
+		term: DefaultTerm,
+		week: Number(getWeekNumsForTerm(DefaultTerm)[0]),
 		accomplishments: [{ title: '', hours: '', description: '' }],
 		plans: [''],
 		obstacles: [''],

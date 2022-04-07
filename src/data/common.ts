@@ -32,6 +32,7 @@ export interface RangeList {
 }
 
 type Term = 'Fall' | 'Winter' | 'Spring';
+export const DefaultTerm: Term = 'Spring';
 type Week = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16;
 
 export const Ranges: RangeList = {
@@ -55,10 +56,10 @@ export const Ranges: RangeList = {
 		12: '02/17/22 - 03/09/22', // Professors added 1 week to this interval
 	},
 	spring: {
-		13: '03/10/22 - TDB',
-		14: 'TDB - TDB',
-		15: 'TDB - TDB',
-		16: 'TDB - TDB',
+		13: '03/10/22 - 04/06/22', // Includes spring break
+		14: '04/07/22 - 04/20/22',
+		15: '04/21/22 - 05/04/22',
+		16: '05/05/22 - 05/18/22',
 	},
 };
 
