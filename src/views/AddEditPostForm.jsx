@@ -27,6 +27,7 @@ import {
 	Select,
 } from '@mui/material';
 
+import { getDateRange } from '../data/common';
 import { DefaultTerm } from '../data/common';
 import AccomplishmentEditGroup from '../components/AccomplishmentEditGroup';
 import PlanEditGroup from '../components/PlanEditGroup';
@@ -189,7 +190,7 @@ export default function AddEditPostForm({ addEditMode, post, ...rest }) {
 								week = Number(week);
 								return (
 									<MenuItem key={week} value={Number(week)}>
-										{week}
+										#{week}: {getDateRange(values.term, week)}
 									</MenuItem>
 								);
 							})}
